@@ -1,3 +1,7 @@
+# Modified by Jared
+This branch is configured to run Rserver within an isolated container. R and all packages should be installed within the container.
+
+
 # Running Rstudio Server in a Conda Environment
 
 I usually rely on the [conda package manager](https://docs.conda.io/en/latest/) to manage my environments during development. Thanks to [conda-forge](https://conda-forge.org/) and [bioconda](https://bioconda.github.io/) most R packages are now also available through conda. For production,
