@@ -13,8 +13,6 @@ CONTAINER=$CONTAINER  # path to singularity container (will be automatically dow
 RSTUDIO_TMP="${TMPDIR}/$(echo -n $CONDA_PREFIX | md5sum | awk '{print $1}')"
 mkdir -p $RSTUDIO_TMP/{run,var-lib-rstudio-server,local-share-rstudio}
 
-R_BIN=/opt/R/4.1.2/bin/R
-PY_BIN=$CONDA_PREFIX/bin/python
 
 if [ ! -f $CONTAINER ]; then
 	singularity build --fakeroot $CONTAINER Singularity
@@ -27,8 +25,6 @@ fi
 
 echo "Starting rstudio service on port $PORT ..."
 echo "Home is $HOME"
-echo "Conda prefix is $CONDA_PREFIX"
-echo "R bin is $R_BIN"
 echo "Container is $CONTAINER"
 
 singularity exec \
@@ -42,17 +38,15 @@ singularity exec \
 	--bind $RSTUDIO_TMP/local-share-rstudio:/home/rstudio/.local/share/rstudio \
 	--bind ${CONDA_PREFIX}:${CONDA_PREFIX} \
 	--bind /home/${USER}/rstudio-server-conda/singularity:/home/${USER}/rstudio-server-conda/singularity \
+	--bind /home/${USER}/.local/share/rstudio:/home/${USER}/.local/share/rstudio \
 	--bind $HOME/.config/rstudio:/home/rstudio/.config/rstudio \
-        `# add additional bind mount required for your use-case` \
-	--bind /opt:/opt \
+        --bind /home/${USER}/.config/rstudio:/home/${USER}/.config/rstudio \
+	`# add additional bind mount required for your use-case` \
 	--bind /data/users/${USER}:/data/users/${USER} \
-	--env CONDA_PREFIX=$CONDA_PREFIX \
-	--env RSTUDIO_WHICH_R=$R_BIN \
-	--env RETICULATE_PYTHON=$PY_BIN \
 	--env PASSWORD=$PASSWORD \
 	--env PORT=$PORT \
 	--env USER=$USER \
 	$CONTAINER \
-	./init.sh
+	./init_containerized.sh
 
 

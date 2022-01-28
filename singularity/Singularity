@@ -1,6 +1,6 @@
 Bootstrap: docker
 
-From: rocker/rstudio
+From: rocker/rstudio:4.1.2
 
 %files
     init.sh /init.sh
@@ -16,7 +16,7 @@ From: rocker/rstudio
     echo "INSIDE CONTAINER BEING BUILT"
 
     # installing packages from cran
-    R --slave -e 'install.packages("devtools",repos="https://cran.rstudio.com/")'
-    R --slave -e 'install.packages("tidyverse",repos="https://cran.rstudio.com/")'
+    #R --slave -e 'install.packages("devtools",repos="https://cran.rstudio.com/")'
+    #R --slave -e 'install.packages("tidyverse",repos="https://cran.rstudio.com/")'
 
 
